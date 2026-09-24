@@ -1,0 +1,22 @@
+{
+  "kode": "rajaongkir",
+  "version": "1.0.0",
+  "frameworks": ["nextjs"],
+  "files": [
+    { "src": "lib/shipping/rajaongkir.ts", "dest": "lib/shipping/rajaongkir.ts" },
+    { "src": "app/api/shipping/cities/route.ts", "dest": "app/api/shipping/cities/route.ts" },
+    { "src": "app/api/shipping/cost/route.ts", "dest": "app/api/shipping/cost/route.ts" }
+  ],
+  "env": ["RAJAONGKIR_API_KEY"],
+  "setup": "SETUP-FRAGMENT.md",
+  "removal": {
+    "files": [
+      "lib/shipping/rajaongkir.ts",
+      "app/api/shipping/cities/route.ts",
+      "app/api/shipping/cost/route.ts"
+    ],
+    "env": ["RAJAONGKIR_API_KEY"],
+    "stepsFile": "REMOVE.md"
+  },
+  "conflicts": []
+}
