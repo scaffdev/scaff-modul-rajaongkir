@@ -55,6 +55,43 @@ grep -ri "rajaongkir\|ongkir" app lib components
 
 ## B. Template Laravel
 
-Modul ini v1.0.0 mendukung Next.js saja. File `laravel/` berstatus STAGED
-(belum disuntik CLI) sehingga tidak ada yang perlu dicopot.
-Berlaku mulai v1.1.0 — panduan section B akan ditambahkan saat itu.
+### B.1. Hapus file (aman — tidak dipakai kode lain)
+
+- `app/Services/RajaOngkirService.php` — client Starter API.
+- `app/Http/Controllers/RajaOngkirController.php` — kota + hitung ongkir.
+
+```bash
+rm "app/Services/RajaOngkirService.php" "app/Http/Controllers/RajaOngkirController.php"
+```
+
+### B.2. Hapus env (dari `.env`)
+
+- `RAJAONGKIR_API_KEY`
+
+Hapus barisnya, jangan dikosongkan saja.
+
+### B.3. Bersihkan dependency
+
+Tidak ada dependency tambahan (modul ini memakai HTTP client Laravel).
+
+### B.4. Verifikasi (wajib lolos semua)
+
+```bash
+composer install --no-dev
+php artisan config:clear
+```
+
+```bash
+grep -ri "rajaongkir\|ongkir" app routes resources config
+```
+
+- Install harus sukses tanpa error.
+- Grep harus menghasilkan **0 baris**. Bila masih ada sisa (mis. dropdown
+  kota di checkout), ganti dulu sumber datanya, lalu verifikasi ulang.
+- Hapus juga blok `rajaongkir` di `config/services.php` bila kamu menambahkannya.
+
+### B.5. Yang JANGAN dihapus (Laravel)
+
+- Halaman checkout umum (ganti sumber ongkirnya dulu).
+- `config/services.php` itu sendiri (cukup hapus blok `rajaongkir`-nya),
+  `composer.json`, `.env` (cukup hapus baris env-nya).

@@ -7,7 +7,7 @@ Disuntik via `scaff ... --with=rajaongkir` (CLI 0.2.0+).
 | Framework | Status | Isi |
 |---|---|---|
 | Next.js | ✅ v1.0.0 | Client Starter API + route kota + route hitung ongkir |
-| Laravel | 🟡 STAGED (v1.1.0) | Service + Controller sudah ditulis, belum disuntik CLI |
+| Laravel | ✅ v1.0.0 | Service + Controller (HTTP client) |
 
 ## Struktur
 
@@ -19,7 +19,7 @@ scaff-modul-rajaongkir/
 ├── nextjs/
 │   ├── lib/shipping/rajaongkir.ts
 │   └── app/api/shipping/{cities/route.ts,cost/route.ts}
-└── laravel/                 ← STAGED untuk v1.1.0
+└── laravel/                 ← sumber untuk base Laravel
     ├── app/Services/RajaOngkirService.php
     └── app/Http/Controllers/RajaOngkirController.php
 ```

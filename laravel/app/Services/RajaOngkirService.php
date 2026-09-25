@@ -5,10 +5,10 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 
 /**
- * Service RajaOngkir Starter — STAGED untuk dukungan Laravel (aktif di v1.1.0).
+ * Service RajaOngkir Starter — disuntik Scaffdev Builder ke template Laravel.
  *
  * NOTED:
- * - File ini BELUM disuntik CLI (manifest v1.0.0 frameworks: ["nextjs"]).
+ * - File ini 100% milik modul "rajaongkir" (lihat scaff.integration.json).
  * - Key dikirim via HEADER `key:` (bukan query) agar tidak nyangkut di log.
  * - Province/city boleh di-cache (docs), cost JANGAN.
  *   Ref: https://rajaongkir.id/dokumentasi

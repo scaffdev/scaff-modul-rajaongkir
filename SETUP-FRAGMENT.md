@@ -29,3 +29,36 @@ RAJAONGKIR_API_KEY=xxxx   # server saja, tanpa NEXT_PUBLIC_
 - `province`/`cities` **boleh di-cache** (data jarang berubah) — bagus untuk
   dropdown autocomplete kota.
 - `cost` **jangan di-cache** — request langsung tiap checkout agar akurat.
+
+---
+
+## Setup Laravel (base Laravel)
+
+> CLI menyuntik Service + Controller; 3 langkah manual di bawah wajib
+> karena tidak bisa di-generate otomatis. Tanpa SDK tambahan.
+
+### L1. Isi `.env`
+
+```bash
+RAJAONGKIR_API_KEY=xxxx   # server saja
+```
+
+### L2. Tambah ke `config/services.php`
+
+```php
+'rajaongkir' => [
+    'key' => env('RAJAONGKIR_API_KEY'),
+],
+```
+
+### L3. Daftarkan route (mis. di `routes/api.php`)
+
+```php
+use App\Http\Controllers\RajaOngkirController;
+
+Route::get('/api/shipping/cities', [RajaOngkirController::class, 'cities']);
+Route::post('/api/shipping/cost', [RajaOngkirController::class, 'cost']);
+```
+
+Lalu `php artisan config:clear`. Berat dalam gram, kurir Starter:
+`jne`, `pos`, `tiki`.
