@@ -14,12 +14,12 @@
 
 ### A.1. Hapus file (aman — tidak dipakai kode lain)
 
-- `lib/shipping/rajaongkir.ts` — client Starter API.
-- `app/api/shipping/cities/route.ts` — daftar kota.
+- `lib/shipping/rajaongkir.ts` — client V2 API.
+- `app/api/shipping/destinations/route.ts` — cari destinasi.
 - `app/api/shipping/cost/route.ts` — hitung ongkir.
 
 ```bash
-rm lib/shipping/rajaongkir.ts "app/api/shipping/cities/route.ts" "app/api/shipping/cost/route.ts"
+rm lib/shipping/rajaongkir.ts "app/api/shipping/destinations/route.ts" "app/api/shipping/cost/route.ts"
 ```
 
 ### A.2. Hapus env (dari `.env.local`)
@@ -57,8 +57,8 @@ grep -ri "rajaongkir\|ongkir" app lib components
 
 ### B.1. Hapus file (aman — tidak dipakai kode lain)
 
-- `app/Services/RajaOngkirService.php` — client Starter API.
-- `app/Http/Controllers/RajaOngkirController.php` — kota + hitung ongkir.
+- `app/Services/RajaOngkirService.php` — client V2 API.
+- `app/Http/Controllers/RajaOngkirController.php` — destinasi + hitung ongkir.
 
 ```bash
 rm "app/Services/RajaOngkirService.php" "app/Http/Controllers/RajaOngkirController.php"

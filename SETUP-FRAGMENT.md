@@ -1,12 +1,13 @@
-## Setup RajaOngkir (digabung otomatis ke SETUP.md)
+## Setup RajaOngkir V2 (digabung otomatis ke SETUP.md)
 
-> 3 langkah, ±5 menit. Akun Starter GRATIS (JNE, POS, TIKI).
-> Docs resmi: https://rajaongkir.id/dokumentasi
+> 3 langkah, ±5 menit. Akun Starter GRATIS, kurir domestik didukung V2.
+> Docs resmi: https://rajaongkir.com/docs
 
 ### 1. Ambil API Key
 
-1. Daftar di https://rajaongkir.com → otomatis dapat akun **Starter**.
-2. Buka dashboard → salin **API Key**.
+1. Daftar/login di https://collaborator.komerce.id → otomatis dapat akun **Starter**.
+2. Buka **Developer → Settings → Api Key**, salin APIKEY **Shipping Cost**.
+   (Jangan pakai key layanan lain, mis. Shipping Delivery.)
 
 ### 2. Isi env
 
@@ -16,18 +17,21 @@ RAJAONGKIR_API_KEY=xxxx   # server saja, tanpa NEXT_PUBLIC_
 
 ### 3. Coba hitung ongkir
 
-1. Ambil ID kota: `GET /api/shipping/cities?province=5` (5 = Jawa Tengah).
-   Catat `city_id` asal & tujuan.
+1. Cari ID destinasi: `GET /api/shipping/destinations?search=bandung&limit=5`.
+   Catat `id` asal & tujuan dari hasil.
 2. Hitung: `POST /api/shipping/cost` dengan body:
    ```json
-   { "origin": "501", "destination": "114", "weight": 1000, "courier": "jne" }
+   { "origin": 1234, "destination": 5678, "weight": 1000, "courier": "jne" }
    ```
-   NOTED: `weight` dalam **gram**. Kode kurir Starter hanya `jne`, `pos`, `tiki`.
+   NOTED: `origin`/`destination` = **ID angka** (bukan nama kota).
+   `weight` dalam **gram**. `courier` boleh gabungan `":"`
+   (mis. `"jne:sicepat:pos"`); daftar kode: `jne, sicepat, ide, sap, ninja,
+   jnt, tiki, wahana, pos, sentral, lion, rex, spx`.
 
 ### Catatan performa (dari docs)
 
-- `province`/`cities` **boleh di-cache** (data jarang berubah) — bagus untuk
-  dropdown autocomplete kota.
+- `destinations` **boleh di-cache** (data wilayah jarang berubah) — bagus untuk
+  dropdown autocomplete (tambah debounce agar tidak membanjiri API).
 - `cost` **jangan di-cache** — request langsung tiap checkout agar akurat.
 
 ---
@@ -56,9 +60,9 @@ RAJAONGKIR_API_KEY=xxxx   # server saja
 ```php
 use App\Http\Controllers\RajaOngkirController;
 
-Route::get('/api/shipping/cities', [RajaOngkirController::class, 'cities']);
+Route::get('/api/shipping/destinations', [RajaOngkirController::class, 'destinations']);
 Route::post('/api/shipping/cost', [RajaOngkirController::class, 'cost']);
 ```
 
-Lalu `php artisan config:clear`. Berat dalam gram, kurir Starter:
-`jne`, `pos`, `tiki`.
+Lalu `php artisan config:clear`. Berat dalam gram; daftar kurir V2:
+`jne, sicepat, ide, sap, ninja, jnt, tiki, wahana, pos, sentral, lion, rex, spx`.

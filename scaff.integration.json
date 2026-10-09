@@ -1,10 +1,11 @@
 {
   "kode": "rajaongkir",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "docsUrl": "https://rajaongkir.com/docs",
   "frameworks": ["nextjs", "laravel"],
   "files": [
     { "src": "lib/shipping/rajaongkir.ts", "dest": "lib/shipping/rajaongkir.ts", "frameworks": ["nextjs"] },
-    { "src": "app/api/shipping/cities/route.ts", "dest": "app/api/shipping/cities/route.ts", "frameworks": ["nextjs"] },
+    { "src": "app/api/shipping/destinations/route.ts", "dest": "app/api/shipping/destinations/route.ts", "frameworks": ["nextjs"] },
     { "src": "app/api/shipping/cost/route.ts", "dest": "app/api/shipping/cost/route.ts", "frameworks": ["nextjs"] },
     { "src": "app/Services/RajaOngkirService.php", "dest": "app/Services/RajaOngkirService.php", "frameworks": ["laravel"] },
     { "src": "app/Http/Controllers/RajaOngkirController.php", "dest": "app/Http/Controllers/RajaOngkirController.php", "frameworks": ["laravel"] }
@@ -14,7 +15,7 @@
   "removal": {
     "files": [
       "lib/shipping/rajaongkir.ts",
-      "app/api/shipping/cities/route.ts",
+      "app/api/shipping/destinations/route.ts",
       "app/api/shipping/cost/route.ts",
       "app/Services/RajaOngkirService.php",
       "app/Http/Controllers/RajaOngkirController.php"

@@ -1,13 +1,13 @@
 # scaff-modul-rajaongkir
 
-Modul **RajaOngkir Starter** (cek ongkir JNE, POS, TIKI) untuk
+Modul **RajaOngkir V2 (Komerce)** (cek ongkir domestik multi-kurir) untuk
 [Scaffdev](https://scaffdev.vercel.app) Builder.
 Disuntik via `scaff ... --with=rajaongkir` (CLI 0.2.0+).
 
 | Framework | Status | Isi |
 |---|---|---|
-| Next.js | ✅ v1.0.0 | Client Starter API + route kota + route hitung ongkir |
-| Laravel | ✅ v1.0.0 | Service + Controller (HTTP client) |
+| Next.js | ✅ v1.1.0 | Client V2 API + route destinasi + route hitung ongkir |
+| Laravel | ✅ v1.1.0 | Service + Controller (HTTP client) |
 
 ## Struktur
 
@@ -18,7 +18,7 @@ scaff-modul-rajaongkir/
 ├── REMOVE.md                ← panduan copot (skenario double shipping)
 ├── nextjs/
 │   ├── lib/shipping/rajaongkir.ts
-│   └── app/api/shipping/{cities/route.ts,cost/route.ts}
+│   └── app/api/shipping/{destinations/route.ts,cost/route.ts}
 └── laravel/                 ← sumber untuk base Laravel
     ├── app/Services/RajaOngkirService.php
     └── app/Http/Controllers/RajaOngkirController.php
@@ -28,7 +28,7 @@ scaff-modul-rajaongkir/
 
 | Key | Keterangan |
 |---|---|
-| `RAJAONGKIR_API_KEY` | API Key Starter (server saja) |
+| `RAJAONGKIR_API_KEY` | API Key Shipping Cost (server saja) |
 
 ## Validasi lokal (sebelum push)
 
@@ -38,5 +38,6 @@ scaffdev validate-module .
 
 ## Docs resmi yang dirujuk kode
 
-- Daftar docs: https://rajaongkir.id/dokumentasi
-- Starter API: https://api.rajaongkir.com/dokumentasi/starter
+- Docs V2: https://rajaongkir.com/docs
+- Endpoint: https://rajaongkir.com/docs/shipping-cost/getting_started/endpoint
+- API Key: https://rajaongkir.com/docs/shipping-cost/getting_started/apikey

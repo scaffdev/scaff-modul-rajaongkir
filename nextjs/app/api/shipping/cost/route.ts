@@ -1,17 +1,17 @@
 import { NextResponse } from "next/server";
 import {
   calculateCost,
-  STARTER_COURIERS,
-  type StarterCourier,
-} from "../../../../../lib/shipping/rajaongkir";
+  SUPPORTED_COURIERS,
+} from "../../../../lib/shipping/rajaongkir";
 
 /**
- * POST /api/shipping/cost — hitung ongkir.
+ * POST /api/shipping/cost — hitung ongkir (RajaOngkir V2).
  *
  * NOTED: import path RELATIF agar jalan di template base mana pun.
  *
- * Body: { origin: string (city_id), destination: string (city_id),
- *         weight: number (gram), courier: "jne" | "pos" | "tiki" }
+ * Body: { origin: number (ID destinasi), destination: number (ID destinasi),
+ *         weight: number (gram), courier: string ("jne" atau "jne:sicepat:pos"),
+ *         price?: "lowest" | "highest" }
  * Balikan: [{ courier, service, description, value, etd }]
  */
 export async function POST(req: Request) {
@@ -25,34 +25,34 @@ export async function POST(req: Request) {
   const b = (body ?? {}) as Record<string, unknown>;
   const str = (v: unknown) => (typeof v === "string" ? v : undefined);
 
-  if (!str(b.origin)?.trim() || !str(b.destination)?.trim()) {
+  if (typeof b.origin !== "number" || !Number.isInteger(b.origin) || typeof b.destination !== "number" || !Number.isInteger(b.destination)) {
     return NextResponse.json(
-      { error: "origin & destination wajib ID kota (ambil dari /api/shipping/cities)" },
+      { error: "origin & destination wajib ID destinasi (ambil dari /api/shipping/destinations)" },
       { status: 400 }
     );
   }
   if (typeof b.weight !== "number" || !Number.isInteger(b.weight) || b.weight <= 0) {
     return NextResponse.json({ error: "weight wajib gram bilangan bulat > 0" }, { status: 400 });
   }
-  if (typeof b.courier !== "string" || !STARTER_COURIERS.includes(b.courier as StarterCourier)) {
-    return NextResponse.json(
-      { error: `courier hanya: ${STARTER_COURIERS.join(", ")} (akun Starter)` },
-      { status: 400 }
-    );
+  if (typeof b.courier !== "string" || !b.courier.trim()) {
+    return NextResponse.json({ error: "courier wajib diisi" }, { status: 400 });
+  }
+  if (b.price !== undefined && b.price !== "lowest" && b.price !== "highest") {
+    return NextResponse.json({ error: 'price hanya "lowest" | "highest"' }, { status: 400 });
   }
 
   try {
     const options = await calculateCost({
-      origin: str(b.origin)!.trim(),
-      destination: str(b.destination)!.trim(),
+      origin: b.origin,
+      destination: b.destination,
       weight: b.weight,
-      courier: b.courier as StarterCourier,
+      courier: str(b.courier)!.trim().toLowerCase(),
+      price: b.price === "lowest" || b.price === "highest" ? b.price : undefined,
     });
     return NextResponse.json({ options });
   } catch (err) {
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Gagal menghitung ongkir" },
-      { status: 502 }
-    );
+    const msg = err instanceof Error ? err.message : "Gagal menghitung ongkir";
+    const status = msg.startsWith("courier tidak didukung") || msg.startsWith("price hanya") ? 400 : 502;
+    return NextResponse.json({ error: msg }, { status });
   }
 }

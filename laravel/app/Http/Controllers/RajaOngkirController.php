@@ -7,36 +7,48 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Controller RajaOngkir — disuntik Scaffdev Builder ke template Laravel.
+ * Controller RajaOngkir V2 — disuntik Scaffdev Builder ke template Laravel.
  *
  * NOTED — daftarkan route manual (mis. di routes/api.php):
- *   Route::get('/api/shipping/cities', [RajaOngkirController::class, 'cities']);
+ *   Route::get('/api/shipping/destinations', [RajaOngkirController::class, 'destinations']);
  *   Route::post('/api/shipping/cost', [RajaOngkirController::class, 'cost']);
  */
 class RajaOngkirController extends Controller
 {
     public function __construct(protected RajaOngkirService $ongkir) {}
 
-    /** GET /api/shipping/cities?province=<id> */
-    public function cities(Request $request): JsonResponse
+    /** GET /api/shipping/destinations?search=<keyword>&limit=<n> */
+    public function destinations(Request $request): JsonResponse
     {
-        $data = $request->validate(['province' => 'nullable|string|max:10']);
+        $data = $request->validate([
+            'search' => 'required|string|max:100',
+            'limit' => 'nullable|integer|min:1|max:100',
+        ]);
 
-        return response()->json(['cities' => $this->ongkir->cities($data['province'] ?? null)]);
+        return response()->json([
+            'destinations' => $this->ongkir->search($data['search'], $data['limit'] ?? 10),
+        ]);
     }
 
     /** POST /api/shipping/cost */
     public function cost(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'origin' => 'required|string|max:10',
-            'destination' => 'required|string|max:10',
+            'origin' => 'required|integer|min:1',
+            'destination' => 'required|integer|min:1',
             'weight' => 'required|integer|min:1',
-            'courier' => 'required|in:jne,pos,tiki',
+            'courier' => 'required|string|max:255',
+            'price' => 'nullable|in:lowest,highest',
         ]);
 
         return response()->json([
-            'options' => $this->ongkir->cost($data['origin'], $data['destination'], $data['weight'], $data['courier']),
+            'options' => $this->ongkir->cost(
+                $data['origin'],
+                $data['destination'],
+                $data['weight'],
+                $data['courier'],
+                $data['price'] ?? null
+            ),
         ]);
     }
 }
